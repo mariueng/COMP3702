@@ -1,4 +1,4 @@
-package comp3702.practical;
+package comp3702.p1;
 
 public class HelloWorld {
 	public static void main(String[] args) {
