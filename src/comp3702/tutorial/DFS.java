@@ -1,4 +1,4 @@
-package comp3702.t2;
+package comp3702.tutorial;
 
 import java.util.Collections;
 import java.util.HashSet;

@@ -1,4 +1,4 @@
-package comp3702.t2;
+package comp3702.tutorial;
 
 public class SearchTreeNode implements Comparable<SearchTreeNode>{
 	

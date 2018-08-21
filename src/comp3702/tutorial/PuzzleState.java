@@ -1,4 +1,4 @@
-package comp3702.t2;
+package comp3702.tutorial;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,10 +72,12 @@ public class PuzzleState implements State {
 		}
 		
 		if ((indexOfBlank / 3) != 0) {
+			// blank is not in top row - up move is valid
 			successors.add(new StateCostPair(swapPositions(indexOfBlank - 3), 1));
 		}
 		
 		if ((indexOfBlank / 3) != 2) {
+			// blank is not in bottom row - down move is valid
 			successors.add(new StateCostPair(swapPositions(indexOfBlank + 3), 1));
 		}
 		
@@ -129,6 +131,49 @@ public class PuzzleState implements State {
 		}
 		
 		return sb.toString();
+	}
+
+	@Override
+	public List<StateCostPair> getSuccessors(State goal) {
+		List<StateCostPair> successors = new ArrayList<StateCostPair>(4);
+        if((indexOfBlank % 3) != 0) {
+            // blank is not in left column - left move is valid
+            successors.add(new StateCostPair(swapPositions(indexOfBlank - 1), 1 + this.heuristic(goal) ));
+        }
+
+        if((indexOfBlank % 3) != 2) {
+            // blank is not in right column - right move is valid
+            successors.add(new StateCostPair(swapPositions(indexOfBlank + 1), 1 + this.heuristic(goal)));
+        }
+
+        if((indexOfBlank / 3) != 0) {
+            // blank is not in top row - up move is valid
+            successors.add(new StateCostPair(swapPositions(indexOfBlank - 3), 1 + this.heuristic(goal)));
+        }
+
+        if((indexOfBlank / 3) != 2) {
+            // blank is not in bottom row - down move is valid
+            successors.add(new StateCostPair(swapPositions(indexOfBlank + 3), 1 + this.heuristic(goal)));
+        }
+
+        return successors;
+	}
+
+	@Override
+	public Double heuristic(State s) {
+		PuzzleState p;
+		if (s instanceof PuzzleState) {
+			p = (PuzzleState) s;
+		} else {
+			return 0.0;
+		}
+		double total = 0.0;
+		for (int i = 0; i < 9; i++) {
+			if (this.numbers.get(i) != p.numbers.get(i)) {
+				total = total + 0.5;
+			}
+		}
+		return total;
 	}
 	
 }

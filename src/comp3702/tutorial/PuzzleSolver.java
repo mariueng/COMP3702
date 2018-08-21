@@ -1,4 +1,4 @@
-package comp3702.t2;
+package comp3702.tutorial;
 
 import java.util.List;
 
@@ -22,19 +22,25 @@ public class PuzzleSolver {
         solveEightPuzzle("BFS", "1348627_5", "1238_4765", showSteps, showNumberOfSteps, showElapsedTime, showTotNodes);
         System.out.println("# DFS:");
         solveEightPuzzle("DFS", "1348627_5", "1238_4765", showSteps, showNumberOfSteps, showElapsedTime, showTotNodes);
-
+        System.out.println("# A*:");
+        solveEightPuzzle("A*", "1348627_5", "1238_4765", showSteps, showNumberOfSteps, showElapsedTime, showTotNodes);
+        
         System.out.println("\n### Puzzle 2 ###");
         System.out.println("# BFS:");
         solveEightPuzzle("BFS", "281_43765", "1238_4765", showSteps, showNumberOfSteps, showElapsedTime, showTotNodes);
         System.out.println("# DFS:");
         solveEightPuzzle("DFS", "281_43765", "1238_4765", showSteps, showNumberOfSteps, showElapsedTime, showTotNodes);
-
+        System.out.println("# A*:");
+        solveEightPuzzle("A*", "281_43765", "1238_4765", showSteps, showNumberOfSteps, showElapsedTime, showTotNodes);
+        
         System.out.println("\n### Puzzle 3 ###");
         System.out.println("# BFS:");
         solveEightPuzzle("BFS", "281463_75", "1238_4765", showSteps, showNumberOfSteps, showElapsedTime, showTotNodes);
         System.out.println("# DFS:");
         solveEightPuzzle("DFS", "281463_75", "1238_4765", showSteps, showNumberOfSteps, showElapsedTime, showTotNodes);
-
+        System.out.println("# A*:");
+        solveEightPuzzle("A*", "281463_75", "1238_4765", showSteps, showNumberOfSteps, showElapsedTime, showTotNodes);
+        
 	}
 	
 	private static void solveEightPuzzle(String searchType, String initStr, String goalStr,
@@ -44,6 +50,8 @@ public class PuzzleSolver {
 			agent = new BFS();
 		} else if (searchType.equals("DFS")) {
 			agent = new DFS();
+		} else if (searchType.equals("A*")) {
+			agent = new AStar();
 		} else {
 			throw new IllegalArgumentException("Invalid search type.");
 		}

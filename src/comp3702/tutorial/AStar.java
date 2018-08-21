@@ -1,37 +1,32 @@
 package comp3702.tutorial;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
+import java.util.PriorityQueue;
 
-public class BFS implements SearchAgent {
+public class AStar implements SearchAgent {
 	
-	private Queue<SearchTreeNode> container;
-	private HashSet<String> visited;
+	private PriorityQueue<SearchTreeNode> container;
 	private int totNodes = 0;
 	
-	public BFS() {
-		container = new LinkedList<SearchTreeNode>();
-		visited = new HashSet<String>();
+	public AStar() {
+		this.container = new PriorityQueue<SearchTreeNode>();
 	}
 	
+	@Override
 	public List<StateCostPair> search(State initial, State goal) {
 		
 		container.add(new SearchTreeNode(new StateCostPair(initial, 0)));
 		
-		while(container.size() > 0) {
-			// select a search tree node from the container
-			SearchTreeNode currentNode = container.remove();
+		while (container.size() > 0) {
+			// select the node with lowest total cost
+			SearchTreeNode currentNode = container.poll();
 			totNodes--;
 			State currentState = currentNode.stateCostPair.state;
 			
-			// mark this state as visited
-			visited.add(currentState.outputString());
-			
 			// check if this state is the goal
-			if (currentState.equals(goal)) {
+			if (currentState.equals(goal.outputString())) {
 				// goal found - return all steps from initial to goal
 				List<StateCostPair> pathToGoal = new LinkedList<StateCostPair>();
 				
@@ -47,12 +42,26 @@ public class BFS implements SearchAgent {
 				return pathToGoal;
 			}
 			
-			// not the goal - add all (unvisited) successors to container
-			List<StateCostPair> successors = currentState.getSuccessors();
+			// not the goal - add all successors to container.
+			List<StateCostPair> successors = currentState.getSuccessors(goal);
 			for (StateCostPair s : successors) {
-				if (!visited.contains(s.state.outputString())) {
+				totNodes++;
+				SearchTreeNode tempNode = currentNode;
+				boolean visited = false;
+				while (tempNode.parent != null) {
+					if (tempNode.stateCostPair.state.equals(s.state)) {
+						// this state has been visited on this path
+						visited = true;
+					}
+					tempNode = tempNode.parent;
+				}
+				if (initial.equals(s.state)) {
+					// this state is the initial state
+					visited = true;
+				}
+				
+				if (!visited) {
 					container.add(new SearchTreeNode(currentNode, s));
-					totNodes++;
 				}
 			}
 		}
@@ -63,10 +72,10 @@ public class BFS implements SearchAgent {
 	}
 	
 	private void reset() {
-		container.clear();
-		visited.clear();
+		this.container = null;
 	}
-	
+
+	@Override
 	public int totNodes() {
 		return totNodes;
 	}
