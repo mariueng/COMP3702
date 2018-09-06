@@ -6,7 +6,7 @@ public class PuzzleSolver {
 	
 	/**
 	 * Main method - solve the 8 puzzle problems from tutorial 2
-	 * using BFS and DFS.
+	 * using BFS, DFS and AStar.
 	 */
 	
 	public static void main(String args[]) {
